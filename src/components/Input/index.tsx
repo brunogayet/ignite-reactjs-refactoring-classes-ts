@@ -1,31 +1,37 @@
 import {
   useEffect,
   useRef,
-  useState,
-  useCallback,
+  useState
 } from 'react';
 
 import { useField } from '@unform/core';
 
 import { Container } from './styles';
 
-const Input = ({ name, icon: Icon, ...rest }) => {
-  const inputRef = useRef(null);
+interface InputProps {
+  name: string;
+  icon?: any;
+  placeholder: string;
+}
+
+export const Input = ({ name, icon: Icon, ...rest } : InputProps) => {
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
 
   const { fieldName, defaultValue, registerField } = useField(name);
 
-  const handleInputFocus = useCallback(() => {
+  function handleInputFocus() {
     setIsFocused(true);
-  }, []);
+  };
 
-  const handleInputBlur = useCallback(() => {
+  function handleInputBlur() {
     setIsFocused(false);
 
     setIsFilled(!!inputRef.current?.value);
-  }, []);
+  };
 
   useEffect(() => {
     registerField({
@@ -49,5 +55,3 @@ const Input = ({ name, icon: Icon, ...rest }) => {
     </Container>
   );
 };
-
-export default Input;
